@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 export const ApproachSection: React.FC = () => {
   return (
-    <div className="relative w-full bg-[#0a0a0a] border-t border-white/5 overflow-hidden">
+    <div id="approach" className="relative w-full bg-[#0a0a0a] border-t border-white/5 overflow-hidden">
       {/* Background Grid: Subtle Vertical Subdivisions */}
       <div className="absolute inset-0 flex justify-between px-[60px] pointer-events-none">
         {[...Array(12)].map((_, i) => (
