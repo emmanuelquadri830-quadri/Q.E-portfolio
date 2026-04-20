@@ -57,6 +57,13 @@ export default function App() {
     }
   ];
 
+  const heroMarqueeItems = [
+    "BRAND SYSTEMS",
+    "DIGITAL EXPERIENCES",
+    "VISUAL DIRECTION",
+    "CULTURE-LED PRODUCTS",
+  ];
+
   const navigationItems = [
     { label: "HOME", href: "#top" },
     { label: "ABOUT", href: "#approach" },
@@ -399,7 +406,7 @@ export default function App() {
                   </motion.button>
                 </div>
 
-                <div className="mt-12 grid flex-1 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(280px,420px)] md:gap-12 lg:mt-8">
+                <div className="mt-12 grid flex-1 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(340px,500px)] md:gap-12 lg:mt-8">
                   <div className="flex min-h-[180px] items-end">
                     <div className="max-w-[420px]">
                       <div className="h-px w-24 bg-black/15" />
@@ -415,7 +422,7 @@ export default function App() {
                     animate="visible"
                     exit="exit"
                     onPointerLeave={() => setHoveredNavItem(null)}
-                    className="flex flex-col items-start justify-center md:items-end md:text-right"
+                    className="flex w-full flex-col items-start justify-center overflow-visible md:items-end md:text-right"
                   >
                     {navigationItems.map((item) => (
                       <motion.a
@@ -427,7 +434,7 @@ export default function App() {
                         onHoverEnd={() => {
                           setHoveredNavItem((current) => (current === item.href ? null : current));
                         }}
-                        className="group relative flex w-full cursor-pointer justify-start py-1.5 sm:py-2 md:justify-end"
+                        className="group relative flex w-full cursor-pointer justify-start overflow-visible py-1.5 sm:py-2 md:justify-end"
                       >
                         <motion.span
                           animate={{
@@ -442,7 +449,7 @@ export default function App() {
                               ? { duration: 0.16 }
                               : { type: "spring" as const, stiffness: 300, damping: 22, mass: 0.8 }
                           }
-                          className="relative inline-block overflow-hidden origin-left will-change-transform md:origin-right"
+                          className="relative inline-block overflow-visible origin-left will-change-transform md:origin-right"
                         >
                           <span className="block text-[clamp(3rem,11vw,6.35rem)] font-black uppercase leading-[0.82]">
                             {item.label}
@@ -548,7 +555,7 @@ export default function App() {
       <div className="relative overflow-hidden bg-bg-dark">
         {/* Dynamic Background: Constrained to Hero Content area */}
         <motion.div 
-          style={{ y: backgroundY }}
+          style={{ y: backgroundY, opacity }}
           className="absolute inset-0 pointer-events-none"
         >
           <InteractiveWaves />
@@ -602,7 +609,7 @@ export default function App() {
             <h1 className="font-display leading-tight tracking-[-0.07em] flex flex-col items-start gap-4 min-h-[300px] justify-center">
               <div className="flex flex-col gap-4 relative w-full">
                 <span className="text-[55px] md:text-[85px] font-black text-white uppercase leading-[0.85] tracking-[-0.08em]">
-                  Sup, I’m Quadri Emmanuel.
+                  Hi, I&apos;m Quadri Emmanuel.
                 </span>
                 <span className={`text-[45px] md:text-[65px] uppercase leading-[0.85] tracking-[-0.07em] flex items-center min-h-[1.1em] transition-all duration-700 ${roles[activeRoleIndex].style}`}>
                   {displayText}
@@ -706,3 +713,4 @@ function SkillBadge({ label }: { label: string }) {
     </div>
   );
 }
+
