@@ -56,7 +56,7 @@ export const AboutSection: React.FC = () => {
               className="glass-card border-white/10 p-8 shadow-[0_40px_120px_rgba(0,0,0,0.24)]"
             >
               <span className="text-[10px] font-semibold uppercase tracking-[0.44em] text-white/35">
-                Expertise
+                Expertise!ssss
               </span>
               <h3 className="mt-5 text-[1.45rem] font-black uppercase leading-[1.02] tracking-[-0.05em] text-white">
                 {item}

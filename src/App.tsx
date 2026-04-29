@@ -12,14 +12,15 @@ import {
   useSpring,
   useTransform,
 } from "motion/react";
-import { ArrowUpRight, MessageSquare } from "lucide-react";
+import type { MotionValue } from "motion/react";
+import { ArrowUpRight } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { InteractiveWaves } from "./components/InteractiveWaves";
-import { StackedPortfolio } from "./components/StackedPortfolio";
-import { ApproachSection } from "./components/ApproachSection";
 
 export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const experienceRef = useRef<HTMLElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [activeRoleIndex, setActiveRoleIndex] = useState(0);
@@ -58,17 +59,115 @@ export default function App() {
   ];
 
   const heroMarqueeItems = [
-    "BRAND SYSTEMS",
-    "DIGITAL EXPERIENCES",
-    "VISUAL DIRECTION",
-    "CULTURE-LED PRODUCTS",
+    "Prototyping",
+    "A/B Testing",
+    "Research & Synthesis",
+    "Design Systems",
+    "Product Strategy",
+    "User Journeys",
+    "Interaction Design",
+    "Accessibility",
+    "Visual Direction",
+    "Frontend Development",
+  ];
+
+  const expertiseItems = [
+    {
+      index: "01",
+      title: "ART DIRECTION",
+      description:
+        "Translating emotion into visual systems, campaign worlds, and digital stories that feel intentional and memorable.",
+      projects: ["Norwegian Capsule", "Cultural Launch"],
+    },
+    {
+      index: "02",
+      title: "UI / VISUAL DESIGN",
+      description:
+        "Creating refined interfaces with strong hierarchy, polished interaction states, and a visual language built for trust.",
+      projects: ["Fintech Dashboard", "Creator Tools"],
+    },
+    {
+      index: "03",
+      title: "UX DESIGN",
+      description:
+        "Shaping product flows around user needs, behavior, and context so complex journeys feel calm and direct.",
+      projects: ["Health Companion", "Learning Portal"],
+    },
+    {
+      index: "04",
+      title: "ENTERPRISE DESIGN THINKING",
+      description:
+        "Aligning teams through research, workshops, service maps, and practical frameworks that move ideas into execution.",
+      projects: ["Ops Console", "Internal Systems"],
+    },
+    {
+      index: "05",
+      title: "DESIGN STRATEGY",
+      description:
+        "Connecting brand, product, and business goals into a clear design direction with measurable creative intent.",
+      projects: ["Market Entry", "Growth Experiments"],
+    },
+    {
+      index: "06",
+      title: "BRAND IDENTITY",
+      description:
+        "Building distinct identities, type systems, and expressive assets for brands that need to feel sharp and current.",
+      projects: ["AI Studio", "Community Platform"],
+    },
+  ];
+
+  const experienceItems = [
+    {
+      index: "01",
+      status: "CURRENT",
+      company: "PUNCH DIGITAL AGENCY",
+      location: "Remote / USA",
+      role: "Graphics Design / UI/UX Designer",
+      date: "2024 - Present",
+      active: true,
+    },
+    {
+      index: "02",
+      status: "TEACHING",
+      company: "GREENWARE ACADEMY",
+      location: "Lagos",
+      role: "Graphics Design Instructor",
+      date: "2025 - Present",
+      active: false,
+    },
+    {
+      index: "03",
+      status: "PROFESSIONAL",
+      company: "SHIREWOOD TECHNOLOGIES",
+      location: "UK (Remote)",
+      role: "UI/UX Designer",
+      date: "2024 - 2025",
+      active: false,
+    },
+    {
+      index: "04",
+      status: "INTERNSHIP",
+      company: "FLEXISAF",
+      location: "Lagos",
+      role: "UI/UX Designer (Intern)",
+      date: "2023",
+      active: false,
+    },
+    {
+      index: "05",
+      status: "FOUNDATION",
+      company: "HNG",
+      location: "Lagos",
+      role: "UI/UX Designer / PM Intern",
+      date: "2022",
+      active: false,
+    },
   ];
 
   const navigationItems = [
     { label: "HOME", href: "#top" },
-    { label: "ABOUT", href: "#approach" },
-    { label: "WORK", href: "#insights" },
-    { label: "CONTACT", href: "#contact" },
+    { label: "EXPERTISE", href: "#expertise" },
+    { label: "EXPERIENCE", href: "#experience" },
   ];
 
   const socialLinks = [
@@ -216,8 +315,18 @@ export default function App() {
   }, [displayText, isDeleting, activeRoleIndex, typingSpeed]);
 
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: heroRef,
     offset: ["start start", "end start"]
+  });
+
+  const { scrollYProgress: experienceScrollProgress } = useScroll({
+    target: experienceRef,
+    offset: ["start start", "end end"],
+  });
+  const smoothExperienceProgress = useSpring(experienceScrollProgress, {
+    stiffness: 90,
+    damping: 28,
+    mass: 0.5,
   });
 
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
@@ -552,7 +661,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* Hero Section Container */}
-      <div className="relative overflow-hidden bg-bg-dark">
+      <div ref={heroRef} className="relative min-h-screen overflow-hidden bg-bg-dark">
         {/* Dynamic Background: Constrained to Hero Content area */}
         <motion.div 
           style={{ y: backgroundY, opacity }}
@@ -575,8 +684,8 @@ export default function App() {
         </motion.div>
 
         {/* Hero Section Content */}
-        <section className="relative min-h-screen px-[60px] pb-20 pt-32 flex items-center max-w-[1700px] mx-auto z-30">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center w-full">
+        <section className="relative z-30 flex min-h-screen flex-col">
+        <div className="mx-auto grid w-full max-w-[1700px] flex-1 grid-cols-1 items-center gap-12 px-6 pb-28 pt-32 sm:px-10 md:pb-32 lg:grid-cols-2 lg:gap-20 lg:px-[60px]">
           
           {/* Left Column: Silhouette / Artistic Visual */}
           <motion.div 
@@ -628,13 +737,13 @@ export default function App() {
               </div>
 
               {/* Body Copy */}
-              <div className="flex flex-col gap-8 mt-4 pt-10 border-t border-white/5 w-full">
-                <p className="text-[17px] md:text-[20px] font-light leading-[1.6] text-white/40 whitespace-nowrap">
+              <div className="mt-4 flex w-full flex-col gap-8 border-t border-white/5 pt-10">
+                <p className="max-w-[760px] text-[17px] font-light leading-[1.6] text-white/40 md:text-[20px]">
                   Designing brands, digital experiences, and ideas that feel cultural, intelligent, and impossible to ignore.
                 </p>
                 
                 {/* Expertise Tags */}
-                <div className="flex flex-nowrap items-center gap-3 mt-1 w-full">
+                <div className="mt-1 flex w-full flex-wrap items-center gap-3">
                   {[
                     { label: "Fintech", color: "bg-blue-500", glow: "shadow-blue-500/50" },
                     { label: "Ed/Fun Tech", color: "bg-orange-500", glow: "shadow-orange-500/50" },
@@ -667,50 +776,242 @@ export default function App() {
             </h1>
           </motion.div>
         </div>
+        <div className="absolute inset-x-0 bottom-0 z-40 overflow-hidden border-y border-white/[0.07] bg-black/35 py-4 backdrop-blur-xl sm:py-5">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-bg-dark via-bg-dark/85 to-transparent sm:w-32" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-bg-dark via-bg-dark/85 to-transparent sm:w-32" />
+          <div className="hero-skills-marquee flex w-max items-center whitespace-nowrap will-change-transform">
+            {[...heroMarqueeItems, ...heroMarqueeItems].map((item, index) => (
+              <span key={`${item}-${index}`} className="inline-flex shrink-0 items-center">
+                <span className="px-5 font-mono text-[10px] font-medium uppercase tracking-[0.24em] text-white/35 transition-colors duration-300 hover:text-white/70 sm:px-7">
+                  {item}
+                </span>
+                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-brand-blue/45" />
+              </span>
+            ))}
+          </div>
+        </div>
       </section>
     </div>
 
-    {/* Strategic Approach Section */}
-    <ApproachSection />
-
-    {/* Portfolio Stacked Cards Section */}
-    <StackedPortfolio />
-
-      {/* Floating CTA / Quick Contact */}
-      <motion.div 
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.5 }}
-        className="fixed bottom-8 right-8 z-40"
+      <section
+        id="expertise"
+        className="relative overflow-visible bg-bg-dark text-white"
       >
-        <button className="flex items-center gap-3 p-4 glass-card rounded-2xl hover:scale-105 transition-all group">
-          <div className="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-            <MessageSquare className="w-5 h-5" />
+        <div className="mx-auto grid max-w-[1700px] grid-cols-1 gap-0 px-6 py-20 sm:px-10 sm:py-24 lg:grid-cols-[42%_58%] lg:px-[60px] lg:py-0">
+          <div className="min-w-0 lg:sticky lg:top-0 lg:flex lg:h-screen lg:items-center lg:pr-12 xl:pr-16">
+            <div className="w-full min-w-0 overflow-hidden border-b border-white/[0.08] pb-12 lg:border-b-0 lg:pb-0">
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.42em] text-white/35">
+                [MY OFFERINGS]
+              </p>
+              <h2 className="mt-9 flex max-w-full flex-col font-display text-[clamp(3.35rem,14vw,5rem)] font-black uppercase leading-[0.84] tracking-[-0.065em] text-white sm:text-[clamp(4rem,10vw,5.75rem)] md:text-[clamp(4.5rem,8vw,6.25rem)] lg:mt-12 lg:text-[clamp(4rem,5.2vw,5.95rem)] xl:text-[clamp(4.4rem,4.9vw,6.35rem)]">
+                <span className="block max-w-full">EXPERTISE</span>
+                <span className="my-2 block font-serif text-[0.42em] font-light lowercase italic leading-none tracking-normal text-white/45 sm:my-3 lg:my-2">
+                  and
+                </span>
+                <span className="block max-w-full">SKILLS</span>
+              </h2>
+              <p className="mt-8 max-w-[500px] text-[15px] font-light leading-[1.75] text-white/48 sm:text-[17px] lg:mt-9">
+                Bridging emotion and clarity, my practice moves across storytelling, research,
+                visual systems, and product thinking. The aim is simple: create useful digital
+                experiences with a point of view.
+              </p>
+            </div>
           </div>
-          <div className="pr-4 text-left">
-            <p className="text-[10px] uppercase tracking-widest text-white/40 font-bold">Initiate</p>
-            <p className="text-sm font-semibold">Let's Talk</p>
-          </div>
-        </button>
-      </motion.div>
 
-      {/* Grid Overlay Footer Accent (Clean separate background section) */}
-      <div id="contact" className="h-[200px] bg-black flex items-end justify-center pb-8">
-        <div className="w-full flex flex-col items-center">
-          <div className="w-full h-[1px] bg-white/5 mb-8" />
-          <p className="text-white/20 font-mono text-xs uppercase tracking-[0.4em]">Designed for the New Era &copy; 2026</p>
+          <div className="lg:border-l lg:border-white/[0.08] lg:pl-12 xl:pl-16">
+            <div className="divide-y divide-white/[0.08]">
+              {expertiseItems.map((item, index) => (
+                <motion.article
+                  key={item.index}
+                  initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
+                  whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-12% 0px -18%" }}
+                  transition={{ duration: 0.75, delay: index * 0.04, ease: premiumEase }}
+                  className="grid gap-8 py-12 sm:py-16 lg:grid-cols-[70px_minmax(0,1fr)_190px] lg:gap-8 xl:py-20"
+                >
+                  <div className="font-mono text-[11px] font-semibold tracking-[0.24em] text-white/35">
+                    [{item.index}]
+                  </div>
+
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-5">
+                      <h3 className="text-[clamp(2.35rem,10vw,3.4rem)] font-black uppercase leading-[0.9] tracking-[-0.065em] text-white sm:text-[clamp(3rem,6vw,4rem)] lg:text-[clamp(2.85rem,3.6vw,4.25rem)]">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <div className="mt-8 h-px w-full bg-white/[0.08]" />
+                    <p className="mt-7 max-w-[620px] text-[15px] font-light leading-[1.75] text-white/48 sm:text-[17px]">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col justify-between gap-8 lg:items-end lg:text-right">
+                    <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.26em] text-white/32">
+                      RELATED WORK &darr;
+                    </p>
+                    <div className="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+                      {item.projects.map((project) => (
+                        <a
+                          key={project}
+                          href="#expertise"
+                          className="group inline-flex w-fit items-center gap-2 border-b border-white/15 pb-1 text-[11px] font-black uppercase tracking-[0.2em] text-white/52 transition-colors duration-300 hover:text-white"
+                        >
+                          <span>{project}</span>
+                          <ArrowUpRight className="h-3 w-3 opacity-45 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-80" />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="experience"
+        ref={experienceRef}
+        className="relative bg-bg-dark text-white"
+        style={{ height: `${experienceItems.length * 100}vh` }}
+      >
+        <div className="sticky top-0 mx-auto grid h-screen max-w-[1700px] grid-cols-1 gap-10 overflow-hidden px-6 py-20 sm:px-10 sm:py-24 lg:grid-cols-[42%_58%] lg:items-center lg:gap-0 lg:px-[60px] lg:py-0">
+          <div className="min-w-0 lg:pr-14 xl:pr-20">
+            <div className="w-full min-w-0 overflow-hidden border-b border-white/[0.08] pb-8 lg:border-b-0 lg:pb-0">
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.4em] text-white/34">
+                [EXPERIENCE]
+              </p>
+              <h2 className="mt-8 flex max-w-[620px] flex-col font-display text-[clamp(3.05rem,12vw,4.25rem)] font-black uppercase leading-[0.86] tracking-[-0.055em] text-white/92 sm:text-[clamp(3.7rem,8vw,5rem)] md:text-[clamp(4rem,6.8vw,5.6rem)] lg:mt-10 lg:text-[clamp(3.45rem,4.4vw,5.1rem)] xl:text-[clamp(3.8rem,4.2vw,5.6rem)]">
+                <span className="block max-w-full">THE</span>
+                <span className="my-1 block font-serif text-[0.38em] font-light lowercase italic leading-none tracking-normal text-white/48 sm:my-2">
+                  prequel
+                </span>
+                <span className="block max-w-full">TO TODAY</span>
+              </h2>
+              <p className="mt-8 max-w-[380px] text-[14px] font-light leading-[1.9] text-white/42 sm:text-[15px] lg:mt-10">
+                Current practice, teaching, professional work, internships, and early product
+                foundations arranged as a clean scroll through the path that shaped the work.
+              </p>
+            </div>
+          </div>
+
+          <div className="relative min-h-[48vh] overflow-hidden lg:min-h-[62vh] lg:border-l lg:border-white/[0.08] lg:pl-12 xl:pl-16">
+            <div className="relative h-full min-h-[48vh] lg:min-h-[62vh]">
+              {experienceItems.map((item, index) => (
+                <ExperienceTimelineCard
+                  key={item.company}
+                  item={item}
+                  index={index}
+                  total={experienceItems.length}
+                  progress={smoothExperienceProgress}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+type ExperienceItem = {
+  index: string;
+  status: string;
+  company: string;
+  location: string;
+  role: string;
+  date: string;
+  active: boolean;
+};
+
+function ExperienceTimelineCard({
+  item,
+  index,
+  total,
+  progress,
+}: {
+  item: ExperienceItem;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const segment = 1 / total;
+  const start = index * segment;
+  const enterEnd = start + segment * 0.22;
+  const holdEnd = start + segment * 0.74;
+  const exitEnd = Math.min(1, start + segment);
+  const isFirst = index === 0;
+  const isLast = index === total - 1;
+
+  const y = useTransform(
+    progress,
+    isFirst
+      ? [0, holdEnd, exitEnd]
+      : isLast
+        ? [start, enterEnd, 1]
+        : [start, enterEnd, holdEnd, exitEnd],
+    isFirst
+      ? ["0px", "0px", "-44px"]
+      : isLast
+        ? ["44px", "0px", "0px"]
+        : ["44px", "0px", "0px", "-44px"]
+  );
+  const opacity = useTransform(
+    progress,
+    isFirst
+      ? [0, holdEnd, exitEnd]
+      : isLast
+        ? [start, enterEnd, 1]
+        : [start, enterEnd, holdEnd, exitEnd],
+    isFirst
+      ? [1, 1, 0]
+      : isLast
+        ? [0, 1, 1]
+        : [0, 1, 1, 0]
+  );
+  const pointerEvents = useTransform(opacity, (value) => (value > 0.6 ? "auto" : "none"));
+
+  return (
+    <motion.article
+      style={{ y, opacity, pointerEvents }}
+      className="absolute inset-0 flex flex-col justify-center bg-bg-dark"
+    >
+      <div className="grid min-w-0 gap-10 border-t border-white/[0.08] py-8 sm:grid-cols-[minmax(0,0.65fr)_minmax(0,0.35fr)] sm:items-start sm:gap-14 sm:py-10 lg:grid-cols-[minmax(0,0.58fr)_minmax(240px,0.42fr)] lg:gap-16 lg:py-12 xl:gap-20">
+        <div className="min-w-0 max-w-[760px]">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span className="font-mono text-[10px] font-semibold tracking-[0.24em] text-white/34">
+              [{item.index}]
+            </span>
+            <span className="inline-flex min-w-0 items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-white/36">
+              {item.active && (
+                <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.68)]" />
+              )}
+              {item.active ? "Active" : item.status}
+            </span>
+          </div>
+          <h3 className="mt-7 max-w-full overflow-wrap-anywhere text-[clamp(1.2rem,4.5vw,2.4rem)] sm:text-[clamp(1.2rem,3.5vw,2.6rem)] lg:text-[clamp(1rem,2.4vw,2.8rem)] font-black uppercase leading-[1] tracking-[-0.03em] text-white/92">
+  {item.company}
+</h3>
+          <p className="mt-6 max-w-[520px] text-[14px] font-light leading-[1.75] text-white/48 sm:text-[15px]">
+            {item.role}
+          </p>
+          <p className="mt-4 max-w-full break-words font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-white/32">
+            [{item.location}]
+          </p>
+        </div>
+
+        <div className="min-w-0 max-w-full border-t border-white/[0.08] pt-6 sm:border-t-0 sm:pt-[3.65rem] sm:text-right">
+          <p className="max-w-full break-words font-display text-[clamp(1.2rem,2.5vw,1.8rem)] font-black uppercase leading-[0.95] tracking-[-0.035em] text-white/84 sm:ml-auto sm:text-[clamp(1.9rem,3.2vw,2.8rem)] lg:text-[clamp(2rem,2.35vw,3rem)]">
+            {item.date}
+          </p>
+          <p className="mt-5 inline-flex max-w-full items-center justify-start gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-white/34 sm:justify-end">
+            {item.active && (
+              <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.68)]" />
+            )}
+            <span className="min-w-0 break-words">{item.active ? "Active" : item.status}</span>
+          </p>
         </div>
       </div>
-    </div>
+    </motion.article>
   );
 }
-
-function SkillBadge({ label }: { label: string }) {
-  return (
-    <div className="flex items-center gap-4 px-4 py-2 border-l border-white/10 hover:border-brand-blue transition-colors group">
-      <div className="w-1.5 h-1.5 rounded-full bg-brand-blue group-hover:shadow-[0_0_10px_#3B82F6] transition-all" />
-      <span className="text-[11px] font-bold tracking-[0.2em] text-white/40 group-hover:text-white transition-colors">{label}</span>
-    </div>
-  );
-}
-
